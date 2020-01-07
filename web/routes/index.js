@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
   }
 
   res.render('index', { 
-    title: 'Cloud Cookie Shop',
+    title: 'Welcome to the Cloud Cookie Shop',
     location: 'Jersey City',
     products: products
   });
