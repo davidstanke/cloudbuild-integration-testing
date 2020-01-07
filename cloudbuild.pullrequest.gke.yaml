@@ -157,7 +157,7 @@ options:
     - CLOUDSDK_CONTAINER_CLUSTER=staging
 
 secrets:
-  - kmsKeyName: projects/$PROJECT_ID/locations/global/keyRings/$PROJECT_ID/cryptoKeys/githubtoken
+  - kmsKeyName: projects/c-i-testing/locations/global/keyRings/c-i-testing/cryptoKeys/githubtoken
     secretEnv: 
       GITHUB_TOKEN: "\
       YzA3ZDBkZWE4Y2RmMTlmNDg3OGJhYWU4NzBiNzM5ZjBjNzIzNjFiNCAtLXBsYWl\
