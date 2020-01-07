@@ -129,23 +129,18 @@ steps:
   args:
     - '-c'
     - |
-      # dermine pull request ID that triggered this build
-      # (feature request: make PR ID available as a substitution)
-      # TODO: bake jq install into a builder
-      apt-get update -y && apt-get install jq -y && \ 
-      
-      export GH_API_READ_URL="https://api.github.com/search/issues?q=$COMMIT_SHA&type:pr" && \
-      echo $$GH_API_READ_URL && \
-
-      export PULLREQUEST_ID=$(curl $$GH_API_READ_URL | jq ".items[0].number") && \
-      echo $$PULLREQUEST_ID && \  
-          
-      echo "{\"body\": \"Preview this revision: http://$(cat _nodeip):$(cat _nodeport)\"}" > /workspace/api_payload.txt && \
-
-      cat /workspace/api_payload.txt && \
-
-      # post the comment
-      curl -s -H "Authorization: token $$GITHUB_TOKEN" -X POST -d @/workspace/api_payload.txt "https://api.github.com/repos/davidstanke/cloudbuild-integration-testing/issues/$$PULLREQUEST_ID/comments"
+        #set -euox
+        # dermine pull request ID that triggered this build
+        # (feature request: make PR ID available as a substitution)
+        # TODO: bake jq install into a builder
+        apt-get update -y && apt-get install jq -y && \
+        export PULLREQUEST_ID=$(curl "https://api.github.com/search/issues?q=$COMMIT_SHA&type:pr" | jq ".items[0].number") && \
+        # prepare the API payload
+        export GITHUB_PAYLOAD='{"body": "Preview this change on staging @ http://$(cat _nodeip):$(cat _nodeport)"}' && \
+        # post the comment
+        curl -s -H "Authorization: token $$GITHUB_TOKEN:" \
+        -X POST -d "$$GITHUB_PAYLOAD" \
+        "https://api.github.com/repos/davidstanke/cloudbuild-integration-testing/issues/$$PULLREQUEST_ID/comments"
   secretEnv: 
     - GITHUB_TOKEN
   waitFor: ['integration tests']
