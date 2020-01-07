@@ -135,7 +135,7 @@ steps:
       apt-get update -y && apt-get install jq -y && \ 
       
       export GH_API_READ_URL="https://api.github.com/search/issues?q=$COMMIT_SHA&type:pr" && \
-      cat $GH_API_READ_URL && \
+      echo $GH_API_READ_URL && \
 
       export PULLREQUEST_ID=$(curl $GH_API_READ_URL | jq ".items[0].number") && \
       echo $PULLREQUEST_ID && \  
