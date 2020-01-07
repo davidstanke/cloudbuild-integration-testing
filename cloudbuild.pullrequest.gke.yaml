@@ -129,21 +129,21 @@ steps:
   args:
     - '-c'
     - |
-      # dermine pull request ID that triggered this build
-      # (feature request: make PR ID available as a substitution)
-      # TODO: bake jq install into a builder
-      apt-get update -y && apt-get install jq -y && \ 
-      export PULLREQUEST_ID=$(curl "https://api.github.com/search/issues?q=$COMMIT_SHA&type:pr" | jq ".items[0].number") && \
-      
-      echo "{\"body\": \"Preview this revision: http://$(cat _nodeip):$(cat _nodeport)\"}" > /workspace/api_payload.txt && \
-
-      cat /workspace/api_payload.txt && \
-
-      # post the comment
-      curl -s -H "Authorization: token $$GITHUB_TOKEN" -X POST -d @/workspace/api_payload.txt "https://api.github.com/repos/GoogleCloudPlatform/cloudbuild-integration-testing/issues/$$PULLREQUEST_ID/comments"
+        #set -euox
+        # dermine pull request ID that triggered this build
+        # (feature request: make PR ID available as a substitution)
+        # TODO: bake jq install into a builder
+        apt-get update -y && apt-get install jq -y && \
+        export PULLREQUEST_ID=$(curl "https://api.github.com/search/issues?q=$COMMIT_SHA&type:pr" | jq ".items[0].number") && \
+        # prepare the API payload
+        export GITHUB_PAYLOAD='{"body": "Preview this change on staging @ http://'$(cat _nodeip)':'$(cat _nodeport)'"}' && \
+        # post the comment
+        curl -s -H "Authorization: token $$GITHUB_TOKEN:" \
+        -X POST -d "$$GITHUB_PAYLOAD" \
+        "https://api.github.com/repos/davidstanke/cloudbuild-integration-testing/issues/$$PULLREQUEST_ID/comments"
   secretEnv: 
     - GITHUB_TOKEN
-  waitFor: ['post preview URL to PR']
+  waitFor: ['integration tests']
 
 # - id: 'delete namespace'
 #   name: 'gcr.io/cloud-builders/kubectl'
@@ -154,12 +154,11 @@ options:
   env:
     # location/name of GKE cluster (used by all kubectl commands)
     - CLOUDSDK_COMPUTE_ZONE=us-central1-a
-    - CLOUDSDK_CONTAINER_CLUSTER=staging
+    - CLOUDSDK_CONTAINER_CLUSTER=cookieshop-staging
 
 secrets:
-  - kmsKeyName: projects/$PROJECT_ID/locations/global/keyRings/$PROJECT_ID/cryptoKeys/githubtoken
+  - kmsKeyName: projects/c-i-testing/locations/global/keyRings/c-i-testing/cryptoKeys/githubtoken
     secretEnv: 
       GITHUB_TOKEN: "\
-      YzA3ZDBkZWE4Y2RmMTlmNDg3OGJhYWU4NzBiNzM5ZjBjNzIzNjFiNCAtLXBsYWl\
-      udGV4dC1maWxlPS0gLS1jaXBoZXJ0ZXh0LWZpbGU9LSAtLWxvY2F0aW9uPWdsb2\
-      JhbCAtLWtleXJpbmc9Yy1pLXRlc3RpbmcgLS1rZXk9Z2l0aHVidG9rZW4="
+      CiQAdwnTzVBYpA8GMV5TKDWqI8g+u+SsGKDta52XNDQEIhyAW90SUgAb+AkW57MohxPPevUxQnYlsI\
+      TXpnFn3GswQXPyNnO/oPt0Ef+heJtU0JVFRsWFO59XBwIPraKY60YPRCh3b/mnXSIEUbyCpx/K3ukFxdaaYBE="
