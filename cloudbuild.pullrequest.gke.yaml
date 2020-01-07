@@ -160,6 +160,5 @@ secrets:
   - kmsKeyName: projects/c-i-testing/locations/global/keyRings/c-i-testing/cryptoKeys/githubtoken
     secretEnv: 
       GITHUB_TOKEN: "\
-      YzA3ZDBkZWE4Y2RmMTlmNDg3OGJhYWU4NzBiNzM5ZjBjNzIzNjFiNCAtLXBsYWl\
-      udGV4dC1maWxlPS0gLS1jaXBoZXJ0ZXh0LWZpbGU9LSAtLWxvY2F0aW9uPWdsb2\
-      JhbCAtLWtleXJpbmc9Yy1pLXRlc3RpbmcgLS1rZXk9Z2l0aHVidG9rZW4="
+      CiQAdwnTzVBYpA8GMV5TKDWqI8g+u+SsGKDta52XNDQEIhyAW90SUgAb+AkW57MohxPPevUxQnYlsI\
+      TXpnFn3GswQXPyNnO/oPt0Ef+heJtU0JVFRsWFO59XBwIPraKY60YPRCh3b/mnXSIEUbyCpx/K3ukFxdaaYBE="
