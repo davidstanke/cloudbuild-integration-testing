@@ -140,7 +140,7 @@ steps:
       cat /workspace/api_payload.txt && \
 
       # post the comment
-      curl -s -H "Authorization: token $$GITHUB_TOKEN" -X POST -d @/workspace/api_payload.txt "https://api.github.com/repos/GoogleCloudPlatform/cloudbuild-integration-testing/issues/$$PULLREQUEST_ID/comments"
+      curl -s -H "Authorization: token $$GITHUB_TOKEN" -X POST -d @/workspace/api_payload.txt "https://api.github.com/repos/davidstanke/cloudbuild-integration-testing/issues/$$PULLREQUEST_ID/comments"
   secretEnv: 
     - GITHUB_TOKEN
   waitFor: ['integration tests']
