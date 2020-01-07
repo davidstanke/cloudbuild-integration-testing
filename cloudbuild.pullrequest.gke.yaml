@@ -154,7 +154,7 @@ options:
   env:
     # location/name of GKE cluster (used by all kubectl commands)
     - CLOUDSDK_COMPUTE_ZONE=us-central1-a
-    - CLOUDSDK_CONTAINER_CLUSTER=staging
+    - CLOUDSDK_CONTAINER_CLUSTER=cookieshop-staging
 
 secrets:
   - kmsKeyName: projects/c-i-testing/locations/global/keyRings/c-i-testing/cryptoKeys/githubtoken
