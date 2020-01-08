@@ -129,12 +129,8 @@ steps:
   args:
     - '-c'
     - |
-        #set -euox
-        # dermine pull request ID that triggered this build
-        # (feature request: make PR ID available as a substitution)
-        # TODO: bake jq install into a builder
-        apt-get update -y && apt-get install jq -y && \
-        export PULLREQUEST_ID=$(curl "https://api.github.com/search/issues?q=$COMMIT_SHA&type:pr" | jq ".items[0].number") && \
+        # pull request is a built-in substitution now. Yay!
+        export PULLREQUEST_ID=$PR_NUMBER
         # prepare the API payload
         export GITHUB_PAYLOAD='{"body": "Preview this change on staging @ http://'$(cat _nodeip)':'$(cat _nodeport)'"}' && \
         # post the comment
