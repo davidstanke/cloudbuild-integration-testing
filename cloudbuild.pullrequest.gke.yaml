@@ -130,7 +130,7 @@ steps:
     - '-c'
     - |
         # pull request is a built-in substitution now. Yay!
-        export PULLREQUEST_ID=$PR_NUMBER
+        export PULLREQUEST_ID=$_PR_NUMBER
         # prepare the API payload
         export GITHUB_PAYLOAD='{"body": "Preview this change on staging @ http://'$(cat _nodeip)':'$(cat _nodeport)'"}' && \
         # post the comment
